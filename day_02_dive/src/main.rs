@@ -7,7 +7,7 @@ fn main() {
     let instructions = process_input(&lines);
 
     println!("part 1: {:?}", part_1(&instructions));
-    println!("part 2: {}", part_2());
+    println!("part 2: {}", part_2(&instructions));
 }
 
 fn process_input(lines: &Vec<&str>) -> Vec<Instruction<i32>> {
@@ -34,7 +34,22 @@ fn part_1(instructions: &Vec<Instruction<i32>>) -> i32 {
     position.horizontal * position.depth
 }
 
-fn part_2() -> String {String::from("not implemented")}
+fn part_2(instructions: &Vec<Instruction<i32>>) -> i32 {
+    let mut position = Position::new(0, 0);
+    let mut aim = 0;
+    for instruction in instructions {
+        match instruction.instruction_name {
+            InstructionName::Forward => {
+                position.horizontal += instruction.value;
+                position.depth += aim * instruction.value;
+            },
+            InstructionName::Up => aim -= instruction.value,
+            InstructionName::Down => aim += instruction.value,
+        }
+    }
+
+    position.horizontal * position.depth
+}
 
 enum InstructionName {
     Forward,
